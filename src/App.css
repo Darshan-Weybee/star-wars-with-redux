@@ -1,0 +1,272 @@
+.App{
+  width: 80%;
+  margin: auto;
+  padding: 2rem;
+}
+
+.logo{
+  margin: 0 0 1rem 0;
+  text-align: center;
+}
+
+.logo img{
+    width: 33%;
+}
+
+.home{
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 3rem;
+}
+.home-inside{
+  width: 30%;
+  height: 14rem;
+  position: relative;
+}
+
+.home-inside:hover{
+  cursor: pointer;
+}
+
+.home img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.home-inside-title{
+  position: absolute;
+  color: #b43131;
+  width: 100%;
+  background-color: rgb(0,0,0, 0.6);
+  font-size: 1.7rem;
+  text-align: center;
+  bottom: 7%;
+  font-weight: bold;
+}
+
+.element{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  position: relative;
+}
+
+.element-inside-parent{
+  width: 17%;
+  height: 10%;
+}
+
+.element-inside-img img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.element-inside-name{
+  color: rgb(146, 146, 146);
+  background-color: whitesmoke;
+  padding: 1rem;
+  text-align: center;
+  font-size: 1.3rem;
+}
+
+.pagination{
+  position: absolute;
+  right: 10%;
+  top: 25%;
+}
+
+.pagination-btn{
+  padding: 0.3rem 0.8rem;
+  margin: 0.1rem;
+  border-radius: 0.3rem;
+  border: none;
+}
+
+.element-details{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  color: white;
+}
+
+.element-details-personal{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.element-details-personal-img{
+  width: 20%;
+}
+
+.element-details-personal-img img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+}
+
+.element-details-personal-detail{
+  width: 80%;
+  padding: 0 0 0 3rem;
+  color: black;
+  background-color: wheat;
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+
+.element-details-personal-detail h2{
+  margin: 1rem 0;
+}
+
+.element-details-personal-detail div{
+  margin: 1rem 0;
+  font-size: 1.1rem;
+}
+
+.element-details-other{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 2rem 0 0 0;
+  gap: 1rem;
+}
+
+.element-details-other-element{
+  width: 30%;
+  background-color: white;
+  color: black;
+  min-height: 12rem;
+}
+
+.element-details-other-element-title div{
+  font-weight: bold;
+  font-size: 1rem;
+  margin: 0.8rem;
+}
+
+.element-details-other-element-content{
+  display: flex;
+  flex-direction: row;
+  /* flex-wrap: wrap; */
+  justify-content: flex-start;
+  padding: 0 0 0 1rem;
+}
+
+.element-details-other-element-content-inside{
+  width: 20%;
+  text-align: center;
+  margin: 0 1rem 0 0;
+}
+
+.element-details-other-element-content-inside-img{
+  width: 40%;
+  height: 45%;
+  margin: 0 auto 0.8rem auto;
+}
+
+.element-details-other-element-content-inside-img img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 5rem;
+}
+
+.element-details-other-element-btn{
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.element-details-other-element-npBtn span{
+  margin: 0.5rem
+}
+
+.element-details-other-element-npBtn button{
+  background: none;
+  border: none;
+  border-radius: 50%;
+  padding: 0.5rem 0.7rem;
+}
+
+.element-details-other-element-npBtn button:hover{
+  background-color: rgb(159, 157, 157);
+}
+
+.element-details-other-element-btnDiv{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+
+.inside-loader{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-weight: bold;
+  margin: 0 0 0 1rem;
+  font-size: 1.2rem;
+}
+
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  margin: 8px;
+  border: 3px solid red;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: red transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.active{
+  background-color: brown;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.main-loader{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-weight: bold;
+  margin: 0 0 0 1rem;
+  font-size: 1.2rem;
+  color: white;
+}
+
