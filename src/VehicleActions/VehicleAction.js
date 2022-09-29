@@ -13,12 +13,12 @@ const fetchVehicleSuccess = data => {
         payload: data
     }
 }
-const fetchVehicleFailure = error => {
-    return{
-        type: FETCH_VEHICLE_FAILURE,
-        payload : error
-    }
-}
+// const fetchVehicleFailure = error => {
+//     return{
+//         type: FETCH_VEHICLE_FAILURE,
+//         payload : error
+//     }
+// }
 export const fetchVehicle = (element) =>{
     let temp = [];
     return async dispatch => {

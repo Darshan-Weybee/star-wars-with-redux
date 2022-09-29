@@ -13,12 +13,12 @@ const fetchFilmSuccess = data => {
         payload: data
     }
 }
-const fetchFilmFailure = error => {
-    return {
-        type: FETCH_FILM_FAILURE,
-        payload: error
-    }
-}
+// const fetchFilmFailure = error => {
+//     return {
+//         type: FETCH_FILM_FAILURE,
+//         payload: error
+//     }
+// }
 export const fetchFilm = (element) => {
     let temp = [];
     return async dispatch => {
@@ -36,17 +36,3 @@ export const fetchFilm = (element) => {
         dispatch(fetchFilmSuccess(tempData));
     }
 }
-
-
-
-// element.length !== 0 ?
-//             element.map(ele =>
-//                 {debugger;
-//                     console.log("map inside", ele);
-//                     fetch(ele).then(resp => resp.json())
-//                     .then(res => {console.log(res.data.title); temp.push(res.data)})
-//                     .catch(err => dispatch(fetchFilmFailure(err.message)))})
-//             : dispatch(fetchFilmSuccess([]))
-        
-//         console.log("temp",temp.length);
-//         dispatch(fetchFilmSuccess(temp))

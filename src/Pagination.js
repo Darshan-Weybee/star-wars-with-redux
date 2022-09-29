@@ -1,12 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
-import { useSearchParams } from "react-router-dom";
 import { fetchData } from "./Simple/Action";
 
 function Pagination({elements,dataFetch}){
     let totalPage = Math.ceil(elements.data.count/10);
     let curPage = elements.page;
-    let [searchValue, setSearchValue] = useSearchParams("");
     return(
         <div>
             <button className="pagination-btn" onClick={() => {dataFetch({data : `${elements.type === "characters" ? "people" : elements.type}`, img : `${elements.type}`, page : `${+elements.page-1}`})}} disabled={+elements.page === 1}><i class="fa-solid fa-chevron-left"></i></button>

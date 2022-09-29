@@ -13,12 +13,12 @@ const fetchPlanetSuccess = data => {
         payload: data
     }
 }
-const fetchPlanetFailure = error => {
-    return{
-        type: FETCH_PLANET_FAILURE,
-        payload : error
-    }
-}
+// const fetchPlanetFailure = error => {
+//     return{
+//         type: FETCH_PLANET_FAILURE,
+//         payload : error
+//     }
+// }
 
 export const fetchPlanet = (element) =>{
     let temp = [];

@@ -13,12 +13,12 @@ const fetchCharSuccess = data => {
         payload: data
     }
 }
-const fetchCharFailure = error => {
-    return {
-        type: FETCH_CHAR_FAILURE,
-        payload: error
-    }
-}
+// const fetchCharFailure = error => {
+//     return {
+//         type: FETCH_CHAR_FAILURE,
+//         payload: error
+//     }
+// }
 
 export const fetchChar = (element) => {
     let temp = [];

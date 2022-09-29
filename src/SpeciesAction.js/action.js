@@ -13,12 +13,12 @@ const fetchSpeciesSuccess = data => {
         payload: data
     }
 }
-const fetchSpeciesFailure = error => {
-    return{
-        type: FETCH_SPECIES_FAILURE,
-        payload : error
-    }
-}
+// const fetchSpeciesFailure = error => {
+//     return{
+//         type: FETCH_SPECIES_FAILURE,
+//         payload : error
+//     }
+// }
 
 export const fetchSpecies = (element) =>{
     let temp = [];

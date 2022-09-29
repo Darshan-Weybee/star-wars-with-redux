@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
-import { arrContext } from "../App";
+// import { arrContext } from "../App";
 import { fetchFilm } from "../FilmsActions/FilmAction";
 import { fetchPlanet } from "../HomeworldAction.js/HWAction";
 import InsideLoader from "../InsideLoader";
