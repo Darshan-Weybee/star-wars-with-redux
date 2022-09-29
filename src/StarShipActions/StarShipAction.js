@@ -31,7 +31,7 @@ export const fetchStarship = (element) =>{
                 const data = await resp.json();
                 return data;
             })
-        : dispatch(fetchStarshipSuccess([]))
+        : dispatch(fetchStarshipSuccess(temp))
         
         const tempData = await Promise.all([...temp]);
         dispatch(fetchStarshipSuccess(tempData));

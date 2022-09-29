@@ -31,7 +31,7 @@ export const fetchSpecies = (element) =>{
                 const data = await resp.json();
                 return data;
             })
-        : dispatch(fetchSpeciesSuccess([]))
+        : dispatch(fetchSpeciesSuccess(temp))
         
         const tempData = await Promise.all([...temp]);
         dispatch(fetchSpeciesSuccess(tempData));
