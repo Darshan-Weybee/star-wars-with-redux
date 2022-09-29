@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { fetchChar } from "../CharacterActions/CharacterAction";
 import { fetchFilm } from "../FilmsActions/FilmAction";
 import InsideLoader from "../InsideLoader";
+import { fetchSpecies } from "../SpeciesAction.js/action";
 
 const roman = {
     "1": "I",
@@ -17,24 +18,27 @@ const roman = {
 const pageLimit = 4;
 
 function SpeciesDetails(){
-    const location = useLocation();
-    const data = location.state.ele;
-    const type = location.state.type
-    let imgNo = data.url.match(/\d+/g)[0];
+    const params = useParams();
+
+    const data = useSelector(state => state.species.data[0]);
+    const dispatchSpecies = useDispatch();
+    useEffect(() => {
+        dispatchSpecies(fetchSpecies([`https://swapi.dev/api/species/${params.id}`]))
+    }, [params.id, dispatchSpecies]);
 
      // Character ==
      const character = useSelector(state => state.char);
      const dispatchChar = useDispatch();
      useEffect(() => {
-         dispatchChar(fetchChar(data.people))
-     },[data.people,dispatchChar]);
+         dispatchChar(fetchChar(data?.people))
+     },[data?.people,dispatchChar]);
          
     // films ==
     const film = useSelector(state => state.film);
     const dispatchFilm = useDispatch();
     useEffect(() => {
-        dispatchFilm(fetchFilm(data.films))
-    },[data.films,dispatchFilm]);
+        dispatchFilm(fetchFilm(data?.films))
+    },[data?.films,dispatchFilm]);
 
     //
     const [char, setChar] = useState(1);
@@ -42,21 +46,27 @@ function SpeciesDetails(){
 
     return (
         <div className="element-details">
+            <div className="link">
+                <Link to={"/"}>Home</Link>
+                &nbsp; &nbsp;<span>/</span>
+                &nbsp; &nbsp;<Link to={"/species"}>Species</Link>
+                &nbsp; &nbsp;<span>/</span>
+                &nbsp; &nbsp;<span>{data?.name}</span>
+            </div>
             <div className="element-details-personal">
                 <div className="element-details-personal-img">
-                    <img src={`https://starwars-visualguide.com/assets/img/${type}/${imgNo}.jpg`} alt={`${data.name}`} onError={imgNotFound}/>
+                    <img src={`https://starwars-visualguide.com/assets/img/species/${params.id}.jpg`} alt={`${data?.name}`} onError={imgNotFound}/>
                 </div>
                 <div className="element-details-personal-detail">
-                    <h2>{data.name}</h2>
-                    <div>{`Classification : ${data.classification}`}</div>
-                    <div>{`Designation : ${data.designation}`}</div>
-                    <div>{`Language : ${data.language}`}</div>
-                    <div>{`Avg Lifespan : ${data.average_lifespan}`}</div>
-                    <div>{`Avg Height : ${data.average_height}`}</div>
-                    <div>{`Avg Height : ${data.average_height}`}</div>
-                    <div>{`Hair Color(s) : ${data.hair_colors}`}</div>
-                    <div>{`Skin Color(s) : ${data.skin_colors}`}</div>
-                    <div>{`Eye Color(s): : ${data.eye_colors}`}</div>
+                    <h2>{data?.name}</h2>
+                    <div>{`Classification : ${data?.classification}`}</div>
+                    <div>{`Designation : ${data?.designation}`}</div>
+                    <div>{`Language : ${data?.language}`}</div>
+                    <div>{`Avg Lifespan : ${data?.average_lifespan} years`}</div>
+                    <div>{`Avg Height : ${data?.average_height} cm`}</div>
+                    <div>{`Hair Color(s) : ${data?.hair_colors}`}</div>
+                    <div>{`Skin Color(s) : ${data?.skin_colors}`}</div>
+                    <div>{`Eye Color(s): : ${data?.eye_colors}`}</div>
                     {/* <Link to="/filmsDetails" state={"abc"}>{data.name}</Link> */}
                 </div>
             </div>
@@ -78,7 +88,7 @@ function SpeciesDetails(){
                                 return (
                                     <div key={index} className="element-details-other-element-content-inside">
                                        <div className="element-details-other-element-content-inside-img"><img src={`https://starwars-visualguide.com/assets/img/films/${imgNo}.jpg`} alt={`${fl.title}`} onError={imgNotFound}/></div>
-                                       <Link to='/filmsDetails' state = {{ele : fl, type : "films"}}>{`Episode ${roman[fl.episode_id]} : ${fl.title}`}</Link>
+                                       <Link to={`/films/${imgNo}`}>{`Episode ${roman[fl.episode_id]} : ${fl.title}`}</Link>
                                     </div> 
                                 )})}
                     </div>
@@ -105,7 +115,7 @@ function SpeciesDetails(){
                                             return (
                                                 <div key={index} className="element-details-other-element-content-inside">
                                                     <div className="element-details-other-element-content-inside-img"><img src={`https://starwars-visualguide.com/assets/img/characters/${imgNo}.jpg`} alt={`${ch.title}`} onError={imgNotFound}/></div>
-                                                    <Link to='/elementDetails' state={{ ele: ch, type: "characters" }}>{`${ch.name}`}</Link>
+                                                    <Link to={`/people/${imgNo}`}>{`${ch.name}`}</Link>
                                                 </div>
                                             )
                                         })}

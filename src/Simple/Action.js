@@ -9,11 +9,11 @@ const fetchDataRequests = () => {
         type: FETCH_DATA_REQUEST
     }
 }
-const fetchDataSuccess = (data, el, page) => {
+const fetchDataSuccess = (data, page) => {
     return{
         type: FETCH_DATA_SUCCESS,
         payload: data,
-        imgName : el,
+        // imgName : el,
         page : page
     }
 }
@@ -24,11 +24,11 @@ const fetchDataFailure = error => {
     }
 }
 
-export const fetchData = (ele) =>{
+export const fetchData = (ele,page) =>{
     return dispatch => {
         dispatch(fetchDataRequests())
-        axios.get(`https://swapi.dev/api/${ele.data}/?page=${ele.page}`)
-        .then(res => dispatch(fetchDataSuccess(res.data, ele.img, ele.page)))
+        axios.get(`https://swapi.dev/api/${ele}/?page=${page}`)
+        .then(res => dispatch(fetchDataSuccess(res.data,page)))
         .catch(err => dispatch(fetchDataFailure(err.message)))
     }
 }

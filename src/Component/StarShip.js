@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { fetchChar } from "../CharacterActions/CharacterAction";
 import { fetchFilm } from "../FilmsActions/FilmAction";
 import InsideLoader from "../InsideLoader";
+import { fetchStarship } from "../StarShipActions/StarShipAction";
 
 const roman = {
     "1": "I",
@@ -17,24 +18,27 @@ const roman = {
 const pageLimit = 4;
 
 function StarshipDetails(){
-    const location = useLocation();
-    const data = location.state.ele;
-    const type = location.state.type
-    let imgNo = data.url.match(/\d+/g)[0];
+    const params = useParams();
+
+    const data = useSelector(state => state.starship.data[0])
+    const dispatchStarShip = useDispatch();
+    useEffect(() => {
+        dispatchStarShip(fetchStarship([`https://swapi.dev/api/starships/${params.id}`]))
+    }, [params.id, dispatchStarShip])
 
      // Character ==
      const character = useSelector(state => state.char);
      const dispatchChar = useDispatch();
      useEffect(() => {
-         dispatchChar(fetchChar(data.pilots))
-     },[data.pilots,dispatchChar]);
+         dispatchChar(fetchChar(data?.pilots))
+     },[data?.pilots,dispatchChar]);
          
     // films ==
     const film = useSelector(state => state.film);
     const dispatchFilm = useDispatch();
     useEffect(() => {
-        dispatchFilm(fetchFilm(data.films))
-    },[data.films,dispatchFilm]);
+        dispatchFilm(fetchFilm(data?.films))
+    },[data?.films,dispatchFilm]);
 
     //
     const [char, setChar] = useState(1);
@@ -42,23 +46,30 @@ function StarshipDetails(){
 
     return (
         <div className="element-details">
+            <div className="link">
+                <Link to={"/"}>Home</Link>
+                &nbsp; &nbsp;<span>/</span>
+                &nbsp; &nbsp;<Link to={"/starships"}>Starships</Link>
+                &nbsp; &nbsp;<span>/</span>
+                &nbsp; &nbsp;<span>{data?.name}</span>
+            </div>
             <div className="element-details-personal">
                 <div className="element-details-personal-img">
-                    <img src={`https://starwars-visualguide.com/assets/img/${type}/${imgNo}.jpg`} alt={`${data.name}`} onError={imgNotFound}/>
+                    <img src={`https://starwars-visualguide.com/assets/img/starships/${params.id}.jpg`} alt={`${data?.name}`} onError={imgNotFound}/>
                 </div>
                 <div className="element-details-personal-detail">
-                    <h2>{data.name}</h2>
-                    <div>{`Model : ${data.model}`}</div>
-                    <div>{`Manufacturer : ${data.manufacturer}`}</div>
-                    <div>{`Class : ${data.starship_class}`}</div>
-                    <div>{`Cost : ${data.cost_in_credits}`}</div>
-                    <div>{`Speed : ${data.max_atmosphering_speed}km/h`}</div>
-                    <div>{`Hyperdrive Rating : ${data.hyperdrive_rating}`}</div>
-                    <div>{`MGLT : ${data.MGLT}`}</div>
-                    <div>{`Length : ${data.length}m`}</div>
-                    <div>{`Cargo Capacity: : ${data.cargo_capacity} metric tons`}</div>
-                    <div>{`Mimimum Crew: : ${data.crew}`}</div>
-                    <div>{`Passengers: : ${data.passengers}`}</div>
+                    <h2>{data?.name}</h2>
+                    <div>{`Model : ${data?.model}`}</div>
+                    <div>{`Manufacturer : ${data?.manufacturer}`}</div>
+                    <div>{`Class : ${data?.starship_class}`}</div>
+                    <div>{`Cost : ${data?.cost_in_credits} credits`}</div>
+                    <div>{`Speed : ${data?.max_atmosphering_speed === "n/a" ? "n/a" : `${data?.max_atmosphering_speed}`}`}</div>
+                    <div>{`Hyperdrive Rating : ${data?.hyperdrive_rating}`}</div>
+                    <div>{`MGLT : ${data?.MGLT}`}</div>
+                    <div>{`Length : ${data?.length}m`}</div>
+                    <div>{`Cargo Capacity: : ${data?.cargo_capacity} metric tons`}</div>
+                    <div>{`Mimimum Crew: : ${data?.crew}`}</div>
+                    <div>{`Passengers: : ${data?.passengers}`}</div>
                     {/* <Link to="/filmsDetails" state={"abc"}>{data.name}</Link> */}
                 </div>
             </div>
@@ -80,7 +91,7 @@ function StarshipDetails(){
                                 return (
                                     <div key={index} className="element-details-other-element-content-inside">
                                        <div className="element-details-other-element-content-inside-img"><img src={`https://starwars-visualguide.com/assets/img/films/${imgNo}.jpg`} alt={`${fl.title}`} onError={imgNotFound}/></div>
-                                       <Link to='/filmsDetails' state = {{ele : fl, type : "films"}}>{`Episode ${roman[fl.episode_id]} : ${fl.title}`}</Link>
+                                       <Link to={`/films/${imgNo}`}>{`Episode ${roman[fl.episode_id]} : ${fl.title}`}</Link>
                                     </div> 
                                 )})}
                     </div>
@@ -107,7 +118,7 @@ function StarshipDetails(){
                                             return (
                                                 <div key={index} className="element-details-other-element-content-inside">
                                                     <div className="element-details-other-element-content-inside-img"><img src={`https://starwars-visualguide.com/assets/img/characters/${imgNo}.jpg`} alt={`${ch.title}`} onError={imgNotFound}/></div>
-                                                    <Link to='/elementDetails' state={{ ele: ch, type: "characters" }}>{`${ch.name}`}</Link>
+                                                    <Link to={`/people/${imgNo}`}>{`${ch.name}`}</Link>
                                                 </div>
                                             )
                                         })}

@@ -12,6 +12,7 @@ import SpeciesDetails from './Component/SpeciesDetails';
 import StarshipDetails from './Component/StarShip';
 import VehicleDetails from './Component/VehicleDetails';
 import PlanetDetails from './Component/PlanetDetails';
+import PageNotFound from './PageNotFound';
 
 const characterArr = new Map();
 const filmArr = new Map();
@@ -29,14 +30,17 @@ function App() {
         <div className="App">
           <Logo />
           <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='/element' element={<Element />}/>
-            <Route path='/elementDetails' element={<ElementDetails/>}/>
-            <Route path='/filmsDetails' element={<FilmsDetails/>}/>
-            <Route path='/speciesDetails' element={<SpeciesDetails/>}/>
-            <Route path='/starshipDetails' element={<StarshipDetails/>}/>
-            <Route path='/vehicleDetails' element={<VehicleDetails/>}/>
-            <Route path='/planetDetails' element={<PlanetDetails/>}/>
+            <Route path='/' element={<Home />}>
+              <Route path=':type' element={<Element/>}>
+              </Route>
+            </Route>
+            <Route path='people/:id' element={<ElementDetails/>}/>
+            <Route path='films/:id' element={<FilmsDetails/>}/>
+            <Route path='species/:id' element={<SpeciesDetails/>}/>
+            <Route path='starships/:id' element={<StarshipDetails/>}/>
+            <Route path='vehicles/:id' element={<VehicleDetails/>}/>
+            <Route path='planets/:id' element={<PlanetDetails/>}/>
+            <Route path='*' element={<PageNotFound/>}/>
           </Routes>
         </div>
       </Provider>

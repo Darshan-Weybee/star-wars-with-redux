@@ -30,7 +30,7 @@ export const fetchFilm = (element) => {
                 const data = await resp.json();
                 return data;
             })
-        : dispatch(fetchFilmSuccess([]))
+        : dispatch(fetchFilmSuccess(temp))
         
         const tempData = await Promise.all([...temp]);
         dispatch(fetchFilmSuccess(tempData));

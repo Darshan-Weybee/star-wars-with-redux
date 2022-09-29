@@ -31,7 +31,7 @@ export const fetchPlanet = (element) =>{
                 const data = await resp.json();
                 return data;
             })
-        : dispatch(fetchPlanetSuccess([]))
+        : dispatch(fetchPlanetSuccess(temp))
         
         const tempData = await Promise.all([...temp]);
         dispatch(fetchPlanetSuccess(tempData));

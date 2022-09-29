@@ -48,6 +48,22 @@
   font-weight: bold;
 }
 
+.element-parent{
+  display: flex;
+  flex-direction: column;
+}
+
+.link{
+  color: white;
+  font-size: 1.4rem;
+  padding: 0 0 2rem 1rem;
+}
+
+.link a{
+  color: aqua;
+  text-decoration: none;
+}
+
 .element{
   display: flex;
   flex-direction: row;

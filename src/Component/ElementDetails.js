@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { fetchChar } from "../CharacterActions/CharacterAction";
 // import { arrContext } from "../App";
 import { fetchFilm } from "../FilmsActions/FilmAction";
 import { fetchPlanet } from "../HomeworldAction.js/HWAction";
@@ -21,51 +22,54 @@ const roman = {
 const pageLimit = 4;
 
 function ElementDetails() {
-    const location = useLocation();
-    const data = location.state.ele;
-    const type = location.state.type;
-    let imgNo = data.url.match(/\d+/g)[0];
+    const params = useParams();
+    
 
-    // const arr = useContext(arrContext);
-
+    const data = useSelector(state => state.char.data[0]);
+    const dispatchChar = useDispatch();
+    useEffect(() => {
+        dispatchChar(fetchChar([`https://swapi.dev/api/people/${params.id}`]))
+    }, [params.id, dispatchChar]);
+    
+    
     // Species ===
     const species = useSelector(state => state.species.data);
     const dispatchSpecies = useDispatch();
     useEffect(() => {
-        dispatchSpecies(fetchSpecies(data.species))
-    }, [data.species, dispatchSpecies]);
+        dispatchSpecies(fetchSpecies(data?.species))
+    }, [data?.species, dispatchSpecies]);
 
 
     // // homeWorld ==
     const homeworld = useSelector(state => state.planet.data);
     const dispatchPlanet = useDispatch();
     useEffect(() => {
-        dispatchPlanet(fetchPlanet([data.homeworld]))
-    }, [data.homeworld, dispatchPlanet]);
+        dispatchPlanet(fetchPlanet([data?.homeworld]))
+    }, [data?.homeworld, dispatchPlanet]);
 
 
     // films ==
     const film = useSelector(state => state.film);
     const dispatchFilm = useDispatch();
     useEffect(() => {
-        dispatchFilm(fetchFilm(data.films))
-    }, [data.films, dispatchFilm]);
+        dispatchFilm(fetchFilm(data?.films))
+    }, [data?.films, dispatchFilm]);
 
 
     // Vehicle ===
     const vehicle = useSelector(state => state.vehicle);
     const dispatchVehicle = useDispatch();
     useEffect(() => {
-        dispatchVehicle(fetchVehicle(data.vehicles))
-    }, [data.vehicles, dispatchVehicle])
+        dispatchVehicle(fetchVehicle(data?.vehicles))
+    }, [data?.vehicles, dispatchVehicle])
 
 
     // StarShip ===
     const starShip = useSelector(state => state.starship)
     const dispatchStarShip = useDispatch();
     useEffect(() => {
-        dispatchStarShip(fetchStarship(data.starships))
-    }, [data.starships, dispatchStarShip])
+        dispatchStarShip(fetchStarship(data?.starships))
+    }, [data?.starships, dispatchStarShip])
 
 
     // pagination state
@@ -75,19 +79,26 @@ function ElementDetails() {
 
     return (
         <div className="element-details">
+           <div className="link">
+                <Link to={"/"}>Home</Link>
+                &nbsp; &nbsp;<span>/</span>
+                &nbsp; &nbsp;<Link to={"/people"}>People</Link>
+                &nbsp; &nbsp;<span>/</span>
+                &nbsp; &nbsp;<span>{data?.name}</span>
+            </div>
             <div className="element-details-personal">
                 <div className="element-details-personal-img">
-                    <img src={`https://starwars-visualguide.com/assets/img/${type}/${imgNo}.jpg`} alt={`${data.name}`} onError={imgNotFound} />
+                    <img src={`https://starwars-visualguide.com/assets/img/characters/${params.id}.jpg`} alt={`${data?.name}`} onError={imgNotFound} />
                 </div>
                 <div className="element-details-personal-detail">
-                    <h2>{data.name}</h2>
-                    <div>{`Birth_Year : ${data.birth_year}`}</div>
+                    <h2>{data?.name}</h2>
+                    <div>{`Birth_Year : ${data?.birth_year}`}</div>
                     <div>{`Species : ${species[0] ? species[0].name : "Unknown"}`}</div>
-                    <div>{`Height : ${data.height}`}</div>
-                    <div>{`Mass : ${data.mass}`}</div>
-                    <div>{`Gender : ${data.gender}`}</div>
-                    <div>{`Hair_Color : ${data.hair_color}`}</div>
-                    <div>{`Skin_Color : ${data.skin_color}`}</div>
+                    <div>{`Height : ${data?.height}cm`}</div>
+                    <div>{`Mass : ${data?.mass}kg`}</div>
+                    <div>{`Gender : ${data?.gender}`}</div>
+                    <div>{`Hair_Color : ${data?.hair_color}`}</div>
+                    <div>{`Skin_Color : ${data?.skin_color}`}</div>
                     <div>{`Homeworld : ${homeworld[0] ? homeworld[0].name : "Unknown"}`}</div>
                     {/* <Link to="/filmsDetails" state={"abc"}>{data.name}</Link> */}
                 </div>
@@ -110,7 +121,7 @@ function ElementDetails() {
                                             return (
                                                 <div key={index} className="element-details-other-element-content-inside">
                                                     <div className="element-details-other-element-content-inside-img"><img src={`https://starwars-visualguide.com/assets/img/films/${imgNo}.jpg`} alt={`${fl.title}`} onError={imgNotFound} /></div>
-                                                    <Link to='/filmsDetails' state={{ ele: fl, type: "films" }}>{`Episode ${roman[fl.episode_id]} : ${fl.title}`}</Link>
+                                                    <Link to={`/films/${imgNo}`}>{`Episode ${roman[fl.episode_id]} : ${fl.title}`}</Link>
                                                 </div>
                                             )
                                         })
@@ -140,7 +151,7 @@ function ElementDetails() {
                                         return (
                                             <div key={index} className="element-details-other-element-content-inside">
                                                 <div className="element-details-other-element-content-inside-img"><img src={`https://starwars-visualguide.com/assets/img/starships/${imgNo}.jpg`} alt={`${ss.title}`} onError={imgNotFound} /></div>
-                                                <Link to='/starshipDetails' state={{ ele: ss, type: "starships" }}>{`${ss.name}`}</Link>
+                                                <Link to={`/starships/${imgNo}`}>{`${ss.name}`}</Link>
                                             </div>
                                         )
                                     })}
@@ -168,7 +179,7 @@ function ElementDetails() {
                                         return (
                                             <div key={index} className="element-details-other-element-content-inside">
                                                 <div className="element-details-other-element-content-inside-img"><img src={`https://starwars-visualguide.com/assets/img/vehicles/${imgNo}.jpg`} alt={`${vh.title}`} onError={imgNotFound} /></div>
-                                                <Link to='/vehicleDetails' state={{ ele: vh, type: "vehicles" }}>{`${vh.name}`}</Link>
+                                                <Link to={`/vehicles/${imgNo}`}>{`${vh.name}`}</Link>
                                             </div>
                                         )
                                     })}
@@ -179,8 +190,8 @@ function ElementDetails() {
                         }    
                 </div>
             </div>
+            </div>
         </div>
-        </div >
     )
 }
 

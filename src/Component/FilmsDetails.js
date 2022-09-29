@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { fetchChar } from "../CharacterActions/CharacterAction";
+import { fetchFilm } from "../FilmsActions/FilmAction";
 import { fetchPlanet } from "../HomeworldAction.js/HWAction";
 import InsideLoader from "../InsideLoader";
 import { fetchSpecies } from "../SpeciesAction.js/action";
@@ -20,45 +21,48 @@ const roman = {
 const pageLimit = 4;
 
 function FilmsDetails() {
-    const location = useLocation();
-    const data = location.state.ele;
-    const type = location.state.type
-    let imgNo = data.url.match(/\d+/g)[0];
+    const params = useParams();
+
+    const data = useSelector(state => state.film.data[0]);
+    const dispatchFilm = useDispatch();
+    useEffect(() => {
+        dispatchFilm(fetchFilm([`https://swapi.dev/api/films/${params.id}`]))
+    }, [params.id, dispatchFilm]);
 
     // Character ==
     const character = useSelector(state => state.char);
     const dispatchChar = useDispatch();
     useEffect(() => {
-        dispatchChar(fetchChar(data.characters))
-    }, [data.characters, dispatchChar]);
+        dispatchChar(fetchChar(data?.characters))
+    }, [data?.characters, dispatchChar]);
 
     // Planet ==
     const planet = useSelector(state => state.planet);
     const dispatchPlanet = useDispatch();
     useEffect(() => {
-        dispatchPlanet(fetchPlanet(data.planets))
-    }, [data.planets, dispatchPlanet]);
+        dispatchPlanet(fetchPlanet(data?.planets))
+    }, [data?.planets, dispatchPlanet]);
 
     // Vehicle ==
     const vehicle = useSelector(state => state.vehicle);
     const dispatchVehicle = useDispatch();
     useEffect(() => {
-        dispatchVehicle(fetchVehicle(data.vehicles))
-    }, [data.vehicles, dispatchVehicle])
+        dispatchVehicle(fetchVehicle(data?.vehicles))
+    }, [data?.vehicles, dispatchVehicle])
 
     // StarShip ===
     const starShip = useSelector(state => state.starship)
     const dispatchStarShip = useDispatch();
     useEffect(() => {
-        dispatchStarShip(fetchStarship(data.starships))
-    }, [data.starships, dispatchStarShip])
+        dispatchStarShip(fetchStarship(data?.starships))
+    }, [data?.starships, dispatchStarShip])
 
     // Species ===
     const species = useSelector(state => state.species);
     const dispatchSpecies = useDispatch();
     useEffect(() => {
-        dispatchSpecies(fetchSpecies(data.species))
-    }, [data.species, dispatchSpecies]);
+        dispatchSpecies(fetchSpecies(data?.species))
+    }, [data?.species, dispatchSpecies]);
 
 
     //page
@@ -70,16 +74,23 @@ function FilmsDetails() {
 
     return (
         <div className="element-details">
+            <div className="link">
+                <Link to={"/"}>Home</Link>
+                &nbsp; &nbsp;<span>/</span>
+                &nbsp; &nbsp;<Link to={"/films"}>Films</Link>
+                &nbsp; &nbsp;<span>/</span>
+                &nbsp; &nbsp;<span>{`Episode ${roman[data?.episode_id]} : ${data?.title}`}</span>
+            </div>
             <div className="element-details-personal">
                 <div className="element-details-personal-img">
-                    <img src={`https://starwars-visualguide.com/assets/img/${type}/${imgNo}.jpg`} alt={`${data.title}`}onError={imgNotFound} />
+                    <img src={`https://starwars-visualguide.com/assets/img/films/${params.id}.jpg`} alt={`${data?.title}`}onError={imgNotFound} />
                 </div>
                 <div className="element-details-personal-detail">
-                    <h2>{`Episode ${roman[data.episode_id]} : ${data.title}`}</h2>
-                    <div>{`Date Created : ${data.release_date}`}</div>
-                    <div>{`Director : ${data.director}`}</div>
-                    <div>{`Producer(s) : ${data.producer}`}</div>
-                    <div>{`Opening Crawl : ${data.opening_crawl}`}</div>
+                    <h2>{`Episode ${roman[data?.episode_id]} : ${data?.title}`}</h2>
+                    <div>{`Date Created : ${data?.release_date}`}</div>
+                    <div>{`Director : ${data?.director}`}</div>
+                    <div>{`Producer(s) : ${data?.producer}`}</div>
+                    <div>{`Opening Crawl : ${data?.opening_crawl}`}</div>
                     {/* <Link to="/filmsDetails" state={"abc"}>{data.name}</Link> */}
                 </div>
             </div>
@@ -103,7 +114,7 @@ function FilmsDetails() {
                                             return (
                                                 <div key={index} className="element-details-other-element-content-inside">
                                                     <div className="element-details-other-element-content-inside-img"><img src={`https://starwars-visualguide.com/assets/img/characters/${imgNo}.jpg`} alt={`${ch.title}`} onError={imgNotFound}/></div>
-                                                    <Link to='/elementDetails' state={{ ele: ch, type: "characters" }}>{`${ch.name}`}</Link>
+                                                    <Link to={`/people/${imgNo}`}>{`${ch.name}`}</Link>
                                                 </div>
                                             )
                                         })
@@ -133,7 +144,7 @@ function FilmsDetails() {
                                             return (
                                                 <div key={index} className="element-details-other-element-content-inside">
                                                     <div className="element-details-other-element-content-inside-img"><img src={`https://starwars-visualguide.com/assets/img/planets/${imgNo}.jpg`} alt={`${pl.title}`} onError={imgNotFound}/></div>
-                                                    <Link to='/planetDetails' state={{ ele: pl, type: "planets" }}>{`${pl.name}`}</Link>
+                                                    <Link to={`/planets/${imgNo}`}>{`${pl.name}`}</Link>
                                                 </div>
                                             )
                                         })}
@@ -162,7 +173,7 @@ function FilmsDetails() {
                                             return (
                                                 <div key={index} className="element-details-other-element-content-inside">
                                                     <div className="element-details-other-element-content-inside-img"><img src={`https://starwars-visualguide.com/assets/img/vehicles/${imgNo}.jpg`} alt={`${vh.title}`} onError={imgNotFound}/></div>
-                                                    <Link to='/vehicleDetails' state={{ ele: vh, type: "vehicles" }}>{`${vh.name}`}</Link>
+                                                    <Link to={`/vehicles/${imgNo}`}>{`${vh.name}`}</Link>
                                                 </div>
                                             )
                         })}
@@ -191,7 +202,7 @@ function FilmsDetails() {
                                             return (
                                                 <div key={index} className="element-details-other-element-content-inside">
                                                     <div className="element-details-other-element-content-inside-img"><img src={`https://starwars-visualguide.com/assets/img/starships/${imgNo}.jpg`} alt={`${ss.title}`} onError={imgNotFound}/></div>
-                                                    <Link to='/starshipDetails' state={{ ele: ss, type: "starships" }}>{`${ss.name}`}</Link>
+                                                    <Link to={`/starships/${imgNo}`}>{`${ss.name}`}</Link>
                                                 </div>
                                             )
                         })}
@@ -220,7 +231,7 @@ function FilmsDetails() {
                                             return (
                                                 <div key={index} className="element-details-other-element-content-inside">
                                                     <div className="element-details-other-element-content-inside-img"><img src={`https://starwars-visualguide.com/assets/img/species/${imgNo}.jpg`} alt={`${sp.title}`} onError={imgNotFound}/></div>
-                                                    <Link to='/speciesDetails' state={{ ele: sp, type: "species" }}>{`${sp.name}`}</Link>
+                                                    <Link to={`/species/${imgNo}`}>{`${sp.name}`}</Link>
                                                 </div>
                                             )
                         })}

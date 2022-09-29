@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { fetchChar } from "../CharacterActions/CharacterAction";
 import { fetchFilm } from "../FilmsActions/FilmAction";
+import { fetchPlanet } from "../HomeworldAction.js/HWAction";
 import InsideLoader from "../InsideLoader";
 
 const roman = {
@@ -17,24 +18,27 @@ const roman = {
 const pageLimit = 4;
 
 function PlanetDetails() {
-    const location = useLocation();
-    const data = location.state.ele;
-    const type = location.state.type
-    let imgNo = data.url.match(/\d+/g)[0];
+    const params = useParams();
+
+    const data = useSelector(state => state.planet.data[0]);
+    const dispatchPlanet = useDispatch();
+    useEffect(() => {
+        dispatchPlanet(fetchPlanet([`https://swapi.dev/api/planets/${params.id}`]))
+    }, [params.id, dispatchPlanet]);
 
     // Character ==
      const character = useSelector(state => state.char);
      const dispatchChar = useDispatch();
      useEffect(() => {
-         dispatchChar(fetchChar(data.residents))
-     },[data.residents,dispatchChar]);
+         dispatchChar(fetchChar(data?.residents))
+     },[data?.residents,dispatchChar]);
 
     // films ==
     const film = useSelector(state => state.film);
     const dispatchFilm = useDispatch();
     useEffect(() => {
-        dispatchFilm(fetchFilm(data.films))
-    },[data.films,dispatchFilm]);
+        dispatchFilm(fetchFilm(data?.films))
+    },[data?.films,dispatchFilm]);
 
     //
     const [char, setChar] = useState(1);
@@ -42,22 +46,29 @@ function PlanetDetails() {
 
     return (
         <div className="element-details">
+            <div className="link">
+                <Link to={"/"}>Home</Link>
+                &nbsp; &nbsp;<span>/</span>
+                &nbsp; &nbsp;<Link to={"/planets"}>Planets</Link>
+                &nbsp; &nbsp;<span>/</span>
+                &nbsp; &nbsp;<span>{data?.name}</span>
+            </div>
             <div className="element-details-personal">
                 <div className="element-details-personal-img">
-                    <img src={`https://starwars-visualguide.com/assets/img/${type}/${imgNo}.jpg`} alt={`${data.name}`}
+                    <img src={`https://starwars-visualguide.com/assets/img/planets/${params.id}.jpg`} alt={`${data?.name}`}
                         onError={imgNotFound}
                     />
                 </div>
                 <div className="element-details-personal-detail">
-                    <h2>{data.name}</h2>
-                    <div>{`Population : ${data.population}`}</div>
-                    <div>{`Rotation Period : ${data.rotation_period}`}</div>
-                    <div>{`Orbital Period : ${data.orbital_period}`}</div>
-                    <div>{`Diameter : ${data.diameter}`}</div>
-                    <div>{`Gravity : ${data.gravity}`}</div>
-                    <div>{`Terrain : ${data.terrain}`}</div>
-                    <div>{`Surface Water : ${data.surface_water}`}</div>
-                    <div>{`Climate : ${data.climate}`}</div>
+                    <h2>{data?.name}</h2>
+                    <div>{`Population : ${data?.population}`}</div>
+                    <div>{`Rotation Period : ${data?.rotation_period} days`}</div>
+                    <div>{`Orbital Period : ${data?.orbital_period} days`}</div>
+                    <div>{`Diameter : ${data?.diameter} km`}</div>
+                    <div>{`Gravity : ${data?.gravity}`}</div>
+                    <div>{`Terrain : ${data?.terrain}`}</div>
+                    <div>{`Surface Water : ${data?.surface_water !== "unknown" ? `${data?.surface_water}%` : "Unknown"}`}</div>
+                    <div>{`Climate : ${data?.climate}`}</div>
                     {/* <Link to="/filmsDetails" state={"abc"}>{data.name}</Link> */}
                 </div>
             </div>
@@ -79,7 +90,7 @@ function PlanetDetails() {
                                 return (
                                     <div key={index} className="element-details-other-element-content-inside">
                                        <div className="element-details-other-element-content-inside-img"><img src={`https://starwars-visualguide.com/assets/img/films/${imgNo}.jpg`} alt={`${fl.title}`} onError={imgNotFound}/></div>
-                                       <Link to='/filmsDetails' state = {{ele : fl, type : "films"}}>{`Episode ${roman[fl.episode_id]} : ${fl.title}`}</Link>
+                                       <Link to={`/films/${imgNo}`}>{`Episode ${roman[fl.episode_id]} : ${fl.title}`}</Link>
                                     </div> 
                                 )})}
                     </div>
@@ -106,7 +117,7 @@ function PlanetDetails() {
                                             return (
                                                 <div key={index} className="element-details-other-element-content-inside">
                                                     <div className="element-details-other-element-content-inside-img"><img src={`https://starwars-visualguide.com/assets/img/characters/${imgNo}.jpg`} alt={`${ch.title}`} onError={imgNotFound}/></div>
-                                                    <Link to='/elementDetails' state={{ ele: ch, type: "characters" }}>{`${ch.name}`}</Link>
+                                                    <Link to={`/people/${imgNo}`}>{`${ch.name}`}</Link>
                                                 </div>
                                             )
                                         })}

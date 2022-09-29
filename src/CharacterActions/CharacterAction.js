@@ -31,7 +31,7 @@ export const fetchChar = (element) => {
                 const data = await resp.json();
                 return data;
             })
-        : dispatch(fetchCharSuccess([]))
+        : dispatch(fetchCharSuccess(temp))
         
         const tempData = await Promise.all([...temp]);
         dispatch(fetchCharSuccess(tempData));

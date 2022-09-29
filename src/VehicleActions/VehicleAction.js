@@ -30,7 +30,7 @@ export const fetchVehicle = (element) =>{
                 const data = await resp.json();
                 return data;
             })
-        : dispatch(fetchVehicleSuccess([]))
+        : dispatch(fetchVehicleSuccess(temp))
         
         const tempData = await Promise.all([...temp]);
         dispatch(fetchVehicleSuccess(tempData));
