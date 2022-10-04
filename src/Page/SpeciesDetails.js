@@ -19,8 +19,8 @@ function SpeciesDetails({speciesData, dispatchSpeciesDetail}){
             {navigation_Bar(speciesData)}
             {spciesInfo(params, speciesData)}
             <div className="element-details-other">
-                {<FilmLowerDetail/>}
-                {<CharacterLowerDetail/>}
+                <FilmLowerDetail/>
+                <CharacterLowerDetail/>
             </div>
         </div>
     )

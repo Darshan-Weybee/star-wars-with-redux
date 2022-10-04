@@ -20,8 +20,8 @@ function StarshipDetails({ starshipData, dispatchStarshipDetail }) {
             {starShipInfo(params, starshipData)}
 
             <div className="element-details-other">
-                {<FilmLowerDetail />}
-                {<CharacterLowerDetail />}
+                <FilmLowerDetail />
+                <CharacterLowerDetail />
             </div>
         </div>
     )

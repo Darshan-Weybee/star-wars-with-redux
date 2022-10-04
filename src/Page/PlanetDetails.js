@@ -21,8 +21,8 @@ function PlanetDetails({ planetData, dispatchPlanetDetail }) {
             {navigation_Bar(planetData)}
             {planetInfo(params, planetData)}
             <div className="element-details-other">
-                {<FilmLowerDetail />}
-                {<CharacterLowerDetail />}
+                <FilmLowerDetail />
+                <CharacterLowerDetail />
             </div>
         </div>
     )

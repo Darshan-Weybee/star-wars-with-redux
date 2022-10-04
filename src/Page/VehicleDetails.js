@@ -19,8 +19,8 @@ function VehicleDetails({vehicleData, dispatchVehicleDetail}){
                 {navigation_Bar(vehicleData)}
                 {vehicleInfo(params,vehicleData)}
             <div className="element-details-other">
-                {<FilmLowerDetail/>}
-                {<CharacterLowerDetail/>}
+                <FilmLowerDetail/>
+                <CharacterLowerDetail/>
             </div>
         </div>
     )

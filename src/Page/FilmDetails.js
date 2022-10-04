@@ -30,11 +30,11 @@ function FilmsDetails({ filmData, dispatchFilmDetail }) {
                 {navigation_Bar(filmData)}
                 {filmDetail(params, filmData)}
                 <div className="element-details-other">
-                    {<CharacterLowerDetail />}
-                    {<PlanetLowerDetail />}
-                    {<VehicleLowerDetail />}
-                    {<StarshipLowerDetail />}
-                    {<SpeciesLowerDetail />}
+                    <CharacterLowerDetail />
+                    <PlanetLowerDetail />
+                    <VehicleLowerDetail />
+                    <StarshipLowerDetail />
+                    <SpeciesLowerDetail />
                 </div>
             </div>
     )
