@@ -1,39 +1,29 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import Logo from './Logo';
-import Home from './Home';
+import Logo from './Component/MainPage/Logo';
+import Home from './Component/MainPage/Home';
 import { Provider } from "react-redux"
-import store from './redux/store';
-import Element from './Element';
-import ElementDetails from "./Component/ElementDetails";
+import store from './reducers/redux/store';
+import Element from './Component/MainPage/Element';
+import ElementDetails from "./Component/Detailspage/ElementDetails";
 import { createContext } from 'react';
-import FilmsDetails from './Component/FilmsDetails';
-import SpeciesDetails from './Component/SpeciesDetails';
-import StarshipDetails from './Component/StarShip';
-import VehicleDetails from './Component/VehicleDetails';
-import PlanetDetails from './Component/PlanetDetails';
-import PageNotFound from './PageNotFound';
-
-const characterArr = new Map();
-const filmArr = new Map();
-const speciesArr = new Map();
-const starshipsArr = new Map();
-const vehiclesArr = new Map();
-const planetArr = new Map();
+import FilmsDetails from './Component/Detailspage//FilmsDetails';
+import SpeciesDetails from './Component/Detailspage/SpeciesDetails';
+import StarshipDetails from './Component/Detailspage/StarShipDetails';
+import VehicleDetails from './Component/Detailspage/VehicleDetails';
+import PlanetDetails from './Component/Detailspage/PlanetDetails';
+import PageNotFound from './Component/MainPage/PageNotFound';
 
 export const arrContext = createContext();
 
 function App() {
   return (
-    <arrContext.Provider value={{characterArr, filmArr, speciesArr, starshipsArr, vehiclesArr, planetArr}}>
       <Provider store={store}>
         <div className="App">
           <Logo />
           <Routes>
-            <Route path='/' element={<Home />}>
-              <Route path=':type' element={<Element/>}>
-              </Route>
-            </Route>
+            <Route path='/' element={<Home />}/>
+            <Route path=':type' element={<Element/>}/>
             <Route path='people/:id' element={<ElementDetails/>}/>
             <Route path='films/:id' element={<FilmsDetails/>}/>
             <Route path='species/:id' element={<SpeciesDetails/>}/>
@@ -44,7 +34,6 @@ function App() {
           </Routes>
         </div>
       </Provider>
-    </arrContext.Provider>
   );
 }
 
