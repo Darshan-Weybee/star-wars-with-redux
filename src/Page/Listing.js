@@ -19,28 +19,27 @@ const ROMAN = {
     "6" : "VI"
 }
 
-function Element({ dataList, ...props }) {
+const IMNAGE_URL = "https://starwars-visualguide.com/assets/img/";
+
+function Element({ dataList, action }) {
     const navigate = useNavigate();
     const params = useParams();
     const [pagination, setPagination] = useSearchParams();
     let currentPage = useMemo(() => pagination.get("page") !== null ? pagination.get("page") : 1 ,[pagination]);
-    let totalPage = useMemo(() => {console.log("totalpage") ; return Math.ceil(dataList[`${params["type"]}_listing`].data.count/10)}, [dataList, params]);
+    let totalPage = useMemo(() => Math.ceil(dataList[`${params["type"]}_listing`].data.count/10), [dataList, params]);
 
     useEffect(() => {
         if(['people', 'films','planets','species','vehicles','starships'].includes(params["type"]) && params.type){
-            props[params["type"]](currentPage);
+            action[params["type"]](currentPage);
         }
-        // setTotalPage(Math.ceil(dataList[`${params["type"]}_listing`].data.count/10));
-    },[currentPage, params])
-
-    const IMNAGE_URL = "https://starwars-visualguide.com/assets/img/";
+    },[currentPage, params, action])
 
     return (
         <div className="element-parent">
             <div className="link">
                 <Link to={"/"}>Home</Link>
                 &nbsp; &nbsp;<span>/</span>
-                &nbsp; &nbsp;<span>{params.type.charAt(0).toUpperCase() + params.type.slice(1)}</span>
+                &nbsp; &nbsp;<span>{params.type}</span>
             </div>
             <div className="element">
 
@@ -61,11 +60,7 @@ function Element({ dataList, ...props }) {
             </div>
             <div className="pagination">
                 <div>
-                    <button className="pagination-btn" onClick={() => setPagination({ page: +currentPage - 1 })} disabled={+currentPage === 1}><i class="fa-solid fa-chevron-left"></i></button>
-
-                    {<PageButton totalPage={totalPage} currentPage={currentPage} setPagination={setPagination}/>}
-
-                    <button className="pagination-btn" onClick={() => setPagination({ page: +currentPage + 1 })} disabled={+currentPage === totalPage}><i class="fa-solid fa-chevron-right"></i></button>
+                    <PageButton totalPage={totalPage} currentPage={currentPage} setPagination={setPagination}/>
                 </div>
             </div>
         </div>
@@ -77,6 +72,8 @@ const PageButton = ({totalPage, currentPage, setPagination}) =>{
     let btn = [];
     let pageLimit = 4;
     let start = Math.floor((currentPage - 1) / pageLimit) * pageLimit;
+
+    btn.push(<button className="pagination-btn" onClick={() => setPagination({ page: +currentPage - 1 })} disabled={+currentPage === 1}><i class="fa-solid fa-chevron-left"></i></button>)
     
     for(let i=0; i<pageLimit; i++){
         let num = start + i + 1;
@@ -85,6 +82,9 @@ const PageButton = ({totalPage, currentPage, setPagination}) =>{
         
         btn.push(<button key={num} className={`pagination-btn ${+currentPage === +num ? "active": ""}`} onClick={() => setPagination({page : num})}>{num}</button>);
     }
+
+    btn.push(<button className="pagination-btn" onClick={() => setPagination({ page: +currentPage + 1 })} disabled={+currentPage === totalPage}><i class="fa-solid fa-chevron-right"></i></button>);
+
     return btn;
 }
 
@@ -100,13 +100,13 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProp = dispatch => {
-    return {
+    return  {action : {
         people : (currentPage) => dispatch(people(currentPage)),
         films : (currentPage) => dispatch(films(currentPage)),
         planets : (currentPage) => dispatch(planets(currentPage)),
         species : (currentPage) => dispatch(species(currentPage)),
         vehicles : (currentPage) => dispatch(vehicles(currentPage)),
-        starships : (currentPage) => dispatch(starships(currentPage))
+        starships : (currentPage) => dispatch(starships(currentPage))}
     }
 }
 export default connect(mapStateToProps,mapDispatchToProp)(Element)
