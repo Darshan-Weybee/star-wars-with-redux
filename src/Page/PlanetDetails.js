@@ -4,31 +4,31 @@ import { fetchPlanetDetails } from "../redux/reducer/planet/planetDetail/planetA
 import { connect } from "react-redux";
 import FilmLowerDetail from "../Component/FilmLowerDetail";
 import CharacterLowerDetail from "../Component/CharacterLowerDetail";
-
+import { imgNotFound } from "../Component/exportItems";
+import { IMAGE_URL } from "../Component/exportItems";
 
 
 function PlanetDetails({ planetData, dispatchPlanetDetail }) {
     const params = useParams();
 
     useEffect(() => {
-        dispatchPlanetDetail(`https://swapi.dev/api/planets/${params.id}`);
+        dispatchPlanetDetail(params.id);
     }, [params.id, dispatchPlanetDetail]);
 
+    if(planetData.planet.loading)
+    return "Loading...";
 
-    return (
-        planetData.planet.loading ? "Loading..." : 
-        <div className="element-details">
-            {navigation_Bar(planetData)}
-            {planetInfo(params, planetData)}
+    return <div className="element-details">
+            <NavigationBar planetData={planetData}/>
+            <PlanetInfo params={params} planetData={planetData}/>
             <div className="element-details-other">
                 <FilmLowerDetail />
                 <CharacterLowerDetail />
             </div>
         </div>
-    )
 }
 
-const navigation_Bar = planetData => {
+const NavigationBar = ({planetData}) => {
     return <div className="link">
         <Link to={"/"}>Home</Link>
         &nbsp; &nbsp;<span>/</span>
@@ -38,10 +38,10 @@ const navigation_Bar = planetData => {
     </div>
 }
 
-const planetInfo = (params, planetData) => {
+const PlanetInfo = ({params, planetData}) => {
     return <div className="element-details-personal">
         <div className="element-details-personal-img">
-            <img src={`https://starwars-visualguide.com/assets/img/planets/${params.id}.jpg`} alt={`${planetData.planet.data.name}`}
+            <img src={`${IMAGE_URL}planets/${params.id}.jpg`} alt={`${planetData.planet.data.name}`}
                 onError={imgNotFound}
             />
         </div>
@@ -59,11 +59,6 @@ const planetInfo = (params, planetData) => {
     </div>
 }
 
-const imgNotFound = (event) => {
-    event.target.src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQysHIDmzqCkdLOCk-b5BZeqNJyQHjYt7BucxT_NidPZCNn72FQ9S-6knpuz86ggey-ArY&usqp=CAU'
-    event.onerror = null
-}
-
 const mapStateToProps = state => {
     return {
         planetData: state
@@ -72,7 +67,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProp = dispatch => {
     return {
-        dispatchPlanetDetail: url => dispatch(fetchPlanetDetails(url))
+        dispatchPlanetDetail: planetId => dispatch(fetchPlanetDetails(planetId))
     }
 }
 

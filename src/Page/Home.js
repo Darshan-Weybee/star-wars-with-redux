@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { IMAGE_URL } from "../Component/exportItems";
 
 const HOME_IMAGE_DETAILS = [
     {
@@ -34,15 +35,13 @@ const HOME_IMAGE_DETAILS = [
     }
 ]
 
-const IMG_URL = "https://starwars-visualguide.com/assets/img/categories/";
-
 function Home() {
     return (
         <div className="home">
             {HOME_IMAGE_DETAILS.map((itemDetail, index) => {
                 return <Link key={index} to={`${itemDetail.link}`} className="home-inside">
                     <div className="home-inside-title">{`${itemDetail.title}`}</div>
-                    <img src={`${IMG_URL}${itemDetail.image}.jpg`} alt={`${itemDetail.title}`} />
+                    <img src={`${IMAGE_URL}categories/${itemDetail.image}.jpg`} alt={`${itemDetail.title}`} />
                 </Link>
             })
             }

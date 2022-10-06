@@ -23,11 +23,11 @@ const fetchSpeciesFailure = error => {
     }
 }
 
-export const fetchSpeciesDetails = speciesUrl => {
+export const fetchSpeciesDetails = speciesId => {
     return async dispatch => {
         dispatch(fetchSpeciesRequests())
         try{
-            const species = await (await fetch(speciesUrl)).json();
+            const species = await (await fetch(`https://swapi.dev/api/species/${speciesId}`)).json();
             dispatch(fetchCharDetailForAnotherComp(species.people));
             dispatch(fetchFilmDetailForAnotherComp(species.films));
             dispatch(fetchSpeciesSuccess(species));

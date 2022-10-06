@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import InsideLoader from "./InsideLoader";
 import LowerPagination from "./LowerPagination";
 import { lowerPagination } from "./LowerPagination";
+import { imgNotFound } from "./exportItems";
+import { IMAGE_URL } from "./exportItems";
 
 
 function CharacterLowerDetail({ character }) {
@@ -26,7 +28,7 @@ function CharacterLowerDetail({ character }) {
                                     let imgNo = ch.url.match(/\d+/g)[0];
                                     return (
                                         <div key={index} className="element-details-other-element-content-inside">
-                                            <div className="element-details-other-element-content-inside-img"><img src={`https://starwars-visualguide.com/assets/img/characters/${imgNo}.jpg`} alt={`${ch.title}`} onError={imgNotFound} /></div>
+                                            <div className="element-details-other-element-content-inside-img"><img src={`${IMAGE_URL}characters/${imgNo}.jpg`} alt={`${ch.title}`} onError={imgNotFound} /></div>
                                             <Link to={`/people/${imgNo}`}>{`${ch.name}`}</Link>
                                         </div>
                                     )
@@ -36,11 +38,6 @@ function CharacterLowerDetail({ character }) {
             <LowerPagination current={char} setCurrent={setChar} data={character.data} />
         </div>
     )
-}
-
-const imgNotFound = (event) => {
-    event.target.src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQysHIDmzqCkdLOCk-b5BZeqNJyQHjYt7BucxT_NidPZCNn72FQ9S-6knpuz86ggey-ArY&usqp=CAU'
-    event.onerror = null
 }
 
 

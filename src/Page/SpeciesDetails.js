@@ -4,29 +4,31 @@ import { fetchSpeciesDetails } from "../redux/reducer/species/speciesDetail/spec
 import { connect } from "react-redux";
 import FilmLowerDetail from "../Component/FilmLowerDetail";
 import CharacterLowerDetail from "../Component/CharacterLowerDetail";
+import { imgNotFound } from "../Component/exportItems";
+import { IMAGE_URL } from "../Component/exportItems";
 
 
 function SpeciesDetails({speciesData, dispatchSpeciesDetail}){
     const params = useParams();
 
     useEffect(() => {
-        dispatchSpeciesDetail(`https://swapi.dev/api/species/${params.id}`);
+        dispatchSpeciesDetail(params.id);
     }, [params.id, dispatchSpeciesDetail]);
 
+    if(speciesData.species.loading)
+    return "Loading...";
 
-    return (
-        <div className="element-details">
-            {navigation_Bar(speciesData)}
-            {spciesInfo(params, speciesData)}
+    return  <div className="element-details">
+            <NavigationBar speciesData={speciesData}/>
+            <SpeciesInfo params={params} speciesData={speciesData}/>
             <div className="element-details-other">
                 <FilmLowerDetail/>
                 <CharacterLowerDetail/>
             </div>
         </div>
-    )
 }
 
-const navigation_Bar = speciesData => {
+const NavigationBar = ({speciesData}) => {
     return <div className="link">
     <Link to={"/"}>Home</Link>
     &nbsp; &nbsp;<span>/</span>
@@ -36,10 +38,10 @@ const navigation_Bar = speciesData => {
 </div>
 }
 
-const spciesInfo = (params, speciesData) => {
+const SpeciesInfo = ({params, speciesData}) => {
     return <div className="element-details-personal">
                 <div className="element-details-personal-img">
-                    <img src={`https://starwars-visualguide.com/assets/img/species/${params.id}.jpg`} alt={`${speciesData.species.data.name}`} onError={imgNotFound}/>
+                    <img src={`${IMAGE_URL}species/${params.id}.jpg`} alt={`${speciesData.species.data.name}`} onError={imgNotFound}/>
                 </div>
                 <div className="element-details-personal-detail">
                     <h2>{speciesData.species.data.name}</h2>
@@ -54,10 +56,7 @@ const spciesInfo = (params, speciesData) => {
                 </div>
             </div>
 }
-const imgNotFound = (event) =>{
-    event.target.src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQysHIDmzqCkdLOCk-b5BZeqNJyQHjYt7BucxT_NidPZCNn72FQ9S-6knpuz86ggey-ArY&usqp=CAU'
-    event.onerror = null
-}
+
 
 const mapStateToProps = state => {
     return {
@@ -67,7 +66,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProp = dispatch =>{
     return{
-        dispatchSpeciesDetail : url => dispatch(fetchSpeciesDetails(url))
+        dispatchSpeciesDetail : speciesId => dispatch(fetchSpeciesDetails(speciesId))
     }
 }
 

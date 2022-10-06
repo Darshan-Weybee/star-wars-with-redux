@@ -23,11 +23,11 @@ const fetchPlanetFailure = error => {
     }
 }
 
-export const fetchPlanetDetails = planetUrl => {
+export const fetchPlanetDetails = planetId => {
     return async dispatch => {
         dispatch(fetchPlanetRequests())
         try{
-            const planet = await (await fetch(planetUrl)).json();
+            const planet = await (await fetch(`https://swapi.dev/api/planets/${planetId}`)).json();
             dispatch(fetchCharDetailForAnotherComp(planet.residents));
             dispatch(fetchFilmDetailForAnotherComp(planet.films));
             dispatch(fetchPlanetSuccess(planet));

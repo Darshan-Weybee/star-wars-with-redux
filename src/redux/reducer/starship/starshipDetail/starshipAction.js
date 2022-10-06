@@ -23,11 +23,11 @@ const fetchStarshipFailure = error => {
     }
 }
 
-export const fetchStarshipDetails = starshipUrl => {
+export const fetchStarshipDetails = starshipId => {
     return async dispatch => {
         dispatch(fetchStarshipRequests())
         try{
-            const starship = await (await fetch(starshipUrl)).json();
+            const starship = await (await fetch(`https://swapi.dev/api/starships/${starshipId}`)).json();
             dispatch(fetchCharDetailForAnotherComp(starship.pilots));
             dispatch(fetchFilmDetailForAnotherComp(starship.films));
             dispatch(fetchStarshipSuccess(starship));

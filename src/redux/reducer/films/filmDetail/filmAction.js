@@ -25,11 +25,11 @@ const fetchFilmFailure = error => {
         payload: error
     }
 }
-export const fetchFilmDetails = filmUrl => {
+export const fetchFilmDetails = filmId => {
     return async dispatch => {
         dispatch(fetchFilmRequests())
         try{
-            const film = await (await fetch(filmUrl)).json();
+            const film = await (await fetch(`https://swapi.dev/api/films/${filmId}`)).json();
             dispatch(fetchCharDetailForAnotherComp(film.characters));
             dispatch(fetchPlanetDetailForAnotherComp(film.planets));
             dispatch(fetchVehicleDetailForAnotherComp(film.vehicles));

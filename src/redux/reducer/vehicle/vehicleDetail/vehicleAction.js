@@ -22,11 +22,11 @@ const fetchVehicleFailure = error => {
         payload : error
     }
 }
-export const fetchVehicleDetails = vehicleUrl => {
+export const fetchVehicleDetails = vehicleId => {
     return async dispatch => {
         dispatch(fetchVehicleRequests())
         try{
-            const vehicle = await (await fetch(vehicleUrl)).json();
+            const vehicle = await (await fetch(`https://swapi.dev/api/vehicles/${vehicleId}`)).json();
             dispatch(fetchCharDetailForAnotherComp(vehicle.pilots));
             dispatch(fetchFilmDetailForAnotherComp(vehicle.films));
             dispatch(fetchVehicleSuccess(vehicle));

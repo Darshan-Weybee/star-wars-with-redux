@@ -26,11 +26,11 @@ const fetchCharFailure = error => {
     }
 }
 
-export const fetchCharacterDetails = peopleUrl => {
+export const fetchCharacterDetails = peopleId => {
     return async dispatch => {
         dispatch(fetchCharRequests())
         try{
-            const people = await (await fetch(peopleUrl)).json();
+            const people = await (await fetch(`https://swapi.dev/api/people/${peopleId}`)).json();
             dispatch(fetchSpeciesDetailForAnotherComp(people.species));
             dispatch(fetchPlanetDetailForAnotherComp([people.homeworld]));
             dispatch(fetchFilmDetailForAnotherComp(people.films));

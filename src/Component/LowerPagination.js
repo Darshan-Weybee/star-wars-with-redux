@@ -5,9 +5,7 @@ export const PAGE_LIMIT = 4;
 function LowerPagination({current, setCurrent, data}){
     return(
         <div className="element-details-other-element-btn">
-            {
-                <BtnRender current={current} setCurrent={setCurrent} length={data.length}/>
-            }    
+            <BtnRender current={current} setCurrent={setCurrent} length={data.length}/>
         </div>
     )
 }

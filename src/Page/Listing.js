@@ -8,18 +8,9 @@ import { species } from "../redux/reducer/species/speciesListing/speciesListingA
 import { starships } from "../redux/reducer/starship/starshipListing/starshipListingAction";
 import { vehicles } from "../redux/reducer/vehicle/vehicleListing/vehicleListingAction";
 import MainLoader from "../Component/MainLoader";
-
-
-const ROMAN = {
-    "1" : "I",
-    "2" : "II",
-    "3" : "III",
-    "4" : "IV",
-    "5" : "V",
-    "6" : "VI"
-}
-
-const IMNAGE_URL = "https://starwars-visualguide.com/assets/img/";
+import { ROMAN } from "../Component/exportItems";
+import { imgNotFound } from "../Component/exportItems";
+import { IMAGE_URL } from "../Component/exportItems";
 
 function Element({ dataList, action }) {
     const navigate = useNavigate();
@@ -50,7 +41,7 @@ function Element({ dataList, action }) {
                         let imgNo = ele.url.match(/\d+/g)[0];
                         return (
                             <div key={imgNo} className="element-inside-parent"   onClick={() => navigate(`${imgNo}`)}>
-                                <div className="element-inside-img"><img src={`${IMNAGE_URL}${params.type === "people" ? "characters" : params.type}/${imgNo}.jpg`} alt={`${ele.name}`} onError={imgNotFound}/></div>
+                                <div className="element-inside-img"><img src={`${IMAGE_URL}${params.type === "people" ? "characters" : params.type}/${imgNo}.jpg`} alt={`${ele.name}`} onError={imgNotFound}/></div>
                                 <div className="element-inside-name">{ele.name ? ele.name : `Episode ${ROMAN[ele.episode_id]} : ${ele.title}`}</div>
                             </div>
 
@@ -88,10 +79,6 @@ const PageButton = ({totalPage, currentPage, setPagination}) =>{
     return btn;
 }
 
-const imgNotFound = (event) =>{
-    event.target.src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQysHIDmzqCkdLOCk-b5BZeqNJyQHjYt7BucxT_NidPZCNn72FQ9S-6knpuz86ggey-ArY&usqp=CAU'
-    event.onerror = null
-}
 
 const mapStateToProps = state => {
     return {

@@ -7,28 +7,24 @@ import PlanetLowerDetail from "../Component/PlanetLowerDetail";
 import VehicleLowerDetail from "../Component/VehicleLowerDetail";
 import StarshipLowerDetail from "../Component/StarshipLowerDetail";
 import SpeciesLowerDetail from "../Component/SpeciesLowerDetail";
+import { ROMAN } from "../Component/exportItems";
+import { imgNotFound } from "../Component/exportItems";
+import { IMAGE_URL } from "../Component/exportItems";
 
-const ROMAN = {
-    "1": "I",
-    "2": "II",
-    "3": "III",
-    "4": "IV",
-    "5": "V",
-    "6": "VI"
-}
 
 function FilmsDetails({ filmData, dispatchFilmDetail }) {
     const params = useParams();
 
     useEffect(() => {
-        dispatchFilmDetail(`https://swapi.dev/api/films/${params.id}`);
+        dispatchFilmDetail(params.id);
     }, [params.id, dispatchFilmDetail]);
 
-    return (
-        filmData.film.loading ? "Loading..." :
-            <div className="element-details">
-                {navigation_Bar(filmData)}
-                {filmDetail(params, filmData)}
+    if(filmData.film.loading)
+        return "Loading...";
+
+    return <div className="element-details">
+                <NavigationBar filmData={filmData}/>
+                <FilmDetail params={params} filmData={filmData}/>
                 <div className="element-details-other">
                     <CharacterLowerDetail />
                     <PlanetLowerDetail />
@@ -37,10 +33,10 @@ function FilmsDetails({ filmData, dispatchFilmDetail }) {
                     <SpeciesLowerDetail />
                 </div>
             </div>
-    )
+    
 }
 
-const navigation_Bar = filmData => {
+const NavigationBar = ({filmData}) => {
     return <div className="link">
         <Link to={"/"}>Home</Link>
         &nbsp; &nbsp;<span>/</span>
@@ -50,10 +46,10 @@ const navigation_Bar = filmData => {
     </div>
 }
 
-const filmDetail = (params, filmData) => {
+const FilmDetail = ({params, filmData}) => {
     return <div className="element-details-personal">
         <div className="element-details-personal-img">
-            <img src={`https://starwars-visualguide.com/assets/img/films/${params.id}.jpg`} alt={`${filmData.film.data.title}`} onError={imgNotFound} />
+            <img src={`${IMAGE_URL}films/${params.id}.jpg`} alt={`${filmData.film.data.title}`} onError={imgNotFound} />
         </div>
         <div className="element-details-personal-detail">
             <h2>{`Episode ${ROMAN[filmData.film.data.episode_id]} : ${filmData.film.data.title}`}</h2>
@@ -65,11 +61,6 @@ const filmDetail = (params, filmData) => {
     </div>
 }
 
-const imgNotFound = (event) => {
-    event.target.src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQysHIDmzqCkdLOCk-b5BZeqNJyQHjYt7BucxT_NidPZCNn72FQ9S-6knpuz86ggey-ArY&usqp=CAU'
-    event.onerror = null
-}
-
 const mapStateToProps = state => {
     return {
         filmData: state
@@ -78,7 +69,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProp = dispatch => {
     return {
-        dispatchFilmDetail: url => dispatch(fetchFilmDetails(url))
+        dispatchFilmDetail: filmId => dispatch(fetchFilmDetails(filmId))
     }
 }
 

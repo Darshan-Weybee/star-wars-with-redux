@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 import InsideLoader from "./InsideLoader";
 import LowerPagination from "./LowerPagination";
 import { lowerPagination } from "./LowerPagination";
+import { ROMAN } from "./exportItems";
+import { imgNotFound } from "./exportItems";
+import { IMAGE_URL } from "./exportItems";
 
 
 function FilmLowerDetail({film}){
@@ -25,7 +28,7 @@ function FilmLowerDetail({film}){
                                 let imgNo = fl.url.match(/\d+/g)[0];
                                 return (
                                     <div key={index} className="element-details-other-element-content-inside">
-                                        <div className="element-details-other-element-content-inside-img"><img src={`https://starwars-visualguide.com/assets/img/films/${imgNo}.jpg`} alt={`${fl.title}`} onError={imgNotFound} /></div>
+                                        <div className="element-details-other-element-content-inside-img"><img src={`${IMAGE_URL}films/${imgNo}.jpg`} alt={`${fl.title}`} onError={imgNotFound} /></div>
                                         <Link to={`/films/${imgNo}`}>{`Episode ${ROMAN[fl.episode_id]} : ${fl.title}`}</Link>
                                     </div>
                                 )
@@ -36,21 +39,6 @@ function FilmLowerDetail({film}){
     </div>
     )
 }
-
-const imgNotFound = (event) => {
-    event.target.src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQysHIDmzqCkdLOCk-b5BZeqNJyQHjYt7BucxT_NidPZCNn72FQ9S-6knpuz86ggey-ArY&usqp=CAU'
-    event.onerror = null
-}
-
-const ROMAN = {
-    "1": "I",
-    "2": "II",
-    "3": "III",
-    "4": "IV",
-    "5": "V",
-    "6": "VI"
-}
-
 
 const mapStateToProps = state => {
     return {

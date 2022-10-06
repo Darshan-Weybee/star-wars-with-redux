@@ -5,30 +5,32 @@ import { fetchCharacterDetails } from "../redux/reducer/character/characterDetai
 import FilmLowerDetail from "../Component/FilmLowerDetail";
 import StarshipLowerDetail from "../Component/StarshipLowerDetail";
 import VehicleLowerDetail from "../Component/VehicleLowerDetail";
+import { imgNotFound } from "../Component/exportItems";
+import { IMAGE_URL } from "../Component/exportItems";
 
 
 function ElementDetails({characterData, dispatchCharacterDetail}) {
     const params = useParams();
 
     useEffect(() => {
-        dispatchCharacterDetail(`https://swapi.dev/api/people/${params.id}`);
+        dispatchCharacterDetail(params.id);
     }, [params.id, dispatchCharacterDetail]);
 
-    return (
-        characterData.char.loading ? "Loading..." :
-        <div className="element-details">
-           {navigation_Bar(characterData)}
-           {peopleDetails(params, characterData)}
+    if(characterData.char.loading)
+    return "Loading...";
+
+    return <div className="element-details">
+           <NavigationBar characterData={characterData}/>
+           <PeopleDetails params={params} characterData={characterData}/>
             <div className="element-details-other">
                 <FilmLowerDetail/>
                 <StarshipLowerDetail/>
                 <VehicleLowerDetail/>
             </div>
         </div>
-    )
 }
 
-const navigation_Bar = characterData =>{
+const NavigationBar = ({characterData}) =>{
     return <div className="link">
         <Link to={"/"}>Home</Link>
         &nbsp; &nbsp;<span>/</span>
@@ -38,10 +40,10 @@ const navigation_Bar = characterData =>{
     </div>
 }
 
-const peopleDetails = (params, characterData) => {
+const PeopleDetails = ({params, characterData}) => {
     return <div className="element-details-personal">
     <div className="element-details-personal-img">
-        <img src={`https://starwars-visualguide.com/assets/img/characters/${params.id}.jpg`} alt={`${characterData.char.data.name}`} onError={imgNotFound} />
+        <img src={`${IMAGE_URL}characters/${params.id}.jpg`} alt={`${characterData.char.data.name}`} onError={imgNotFound} />
     </div>
     <div className="element-details-personal-detail">
         <h2>{characterData.char.data.name}</h2>
@@ -57,10 +59,6 @@ const peopleDetails = (params, characterData) => {
 </div>
 }
 
-const imgNotFound = (event) => {
-    event.target.src = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQysHIDmzqCkdLOCk-b5BZeqNJyQHjYt7BucxT_NidPZCNn72FQ9S-6knpuz86ggey-ArY&usqp=CAU'
-    event.onerror = null
-}
 
 const mapStateToProps = state => {
     return {
@@ -70,7 +68,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProp = dispatch =>{
     return{
-        dispatchCharacterDetail : url => dispatch(fetchCharacterDetails(url))
+        dispatchCharacterDetail : peopleId => dispatch(fetchCharacterDetails(peopleId))
     }
 }
 

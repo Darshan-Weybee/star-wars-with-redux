@@ -4,7 +4,7 @@ import PlanetReducer from "../reducer/planet/planetDetail/planetReducer";
 import FilmReducer from "../reducer/films/filmDetail/filmReducer";
 import VehicleReducer from "../reducer/vehicle/vehicleDetail/vehicleReducer";
 import StarshipReducer from "../reducer/starship/starshipDetail/starshipReducer";
-import CharReducer from "../reducer/character/characterDetail/characterReducer";
+import CharacterReducer from "../reducer/character/characterDetail/characterReducer";
 import CharDetailReducerForAnotherComp from "../reducer/character/characterDetailForAnotherComponent/characterDetailForAnotherReducer";
 import FilmDetailReducerForAnotherComp from "../reducer/films/filmDetailForAnotherComponent/filmDetailForAnotherReducer";
 import PlanetDetailReducerForAnotherComp from "../reducer/planet/planetDetailForAnotherComponent/planetDetailForAnotherReducer";
@@ -31,7 +31,7 @@ export const rootReducer = combineReducers({
     film : FilmReducer,
     vehicle : VehicleReducer,
     starship : StarshipReducer,
-    char : CharReducer,
+    char : CharacterReducer,
     
     anotherChar : CharDetailReducerForAnotherComp,
     anotherFilm : FilmDetailReducerForAnotherComp,
