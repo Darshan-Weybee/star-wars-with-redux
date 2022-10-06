@@ -26,7 +26,7 @@ const BtnRender = ({current,setCurrent, length}) => {
                 </div>
                 }
             </div>
-        : ""
+        : null
 
 }
 

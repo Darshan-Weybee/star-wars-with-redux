@@ -5,7 +5,6 @@ import Home from './Page/Home';
 import { Provider } from "react-redux"
 import store from './redux/rootReducer/store';
 import PeopleDetails from "./Page/PeopleDetails";
-import { createContext } from 'react';
 import FilmsDetails from './Page/FilmDetails';
 import SpeciesDetails from './Page/SpeciesDetails';
 import StarshipDetails from './Page/StarShipDetails';
@@ -13,8 +12,6 @@ import VehicleDetails from './Page/VehicleDetails';
 import PlanetDetails from './Page/PlanetDetails';
 import PageNotFound from './Page/PageNotFound';
 import Listing from './Page/Listing';
-
-export const arrContext = createContext();
 
 function App() {
   return (

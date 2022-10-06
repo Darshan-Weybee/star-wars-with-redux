@@ -1,11 +1,12 @@
-import React, { useEffect} from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { fetchStarshipDetails } from "../redux/reducer/starship/starshipDetail/starshipAction";
 import { connect } from "react-redux";
 import FilmLowerDetail from "../Component/FilmLowerDetail";
 import CharacterLowerDetail from "../Component/CharacterLowerDetail";
-import { imgNotFound } from "../Component/exportItems";
-import { IMAGE_URL } from "../Component/exportItems";
+import Image from "../Component/Image";
+import NavigationBar from "../Component/NavigationBar";
+import MainLoader from "../Component/MainLoader";
 
 function StarshipDetails({ starshipData, dispatchStarshipDetail }) {
     const params = useParams();
@@ -14,33 +15,24 @@ function StarshipDetails({ starshipData, dispatchStarshipDetail }) {
         dispatchStarshipDetail(params.id);
     }, [params.id, dispatchStarshipDetail])
 
-    if(starshipData.starship.loading)
-    return "Loading...";
+    if (starshipData.starship.loading)
+        return <MainLoader/>;
 
-    return  <div className="element-details">
-            <NavigationBar starshipData={starshipData} />
-            <StarShipInfo params={params} starshipData={starshipData}/>
-            <div className="element-details-other">
-                <FilmLowerDetail />
-                <CharacterLowerDetail />
-            </div>
+    return <div className="element-details">
+        <NavigationBar type="starships" title={starshipData.starship.data.name}/>
+        <StarShipInfo params={params} starshipData={starshipData} />
+        <div className="element-details-other">
+            <FilmLowerDetail />
+            <CharacterLowerDetail />
         </div>
-}
-
-const NavigationBar = ({starshipData}) => {
-    return <div className="link">
-        <Link to={"/"}>Home</Link>
-        &nbsp; &nbsp;<span>/</span>
-        &nbsp; &nbsp;<Link to={"/starships"}>Starships</Link>
-        &nbsp; &nbsp;<span>/</span>
-        &nbsp; &nbsp;<span>{starshipData.starship.data.name}</span>
     </div>
 }
 
-const StarShipInfo = ({params, starshipData}) => {
+
+const StarShipInfo = ({ params, starshipData }) => {
     return <div className="element-details-personal">
         <div className="element-details-personal-img">
-            <img src={`${IMAGE_URL}starships/${params.id}.jpg`} alt={`${starshipData.starship.data.name}`} onError={imgNotFound}/>
+            <Image type="starships" subType={params.id} />
         </div>
         <div className="element-details-personal-detail">
             <h2>{starshipData.starship.data.name}</h2>

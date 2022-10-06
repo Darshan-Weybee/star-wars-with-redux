@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { fetchPlanetDetails } from "../redux/reducer/planet/planetDetail/planetAction";
 import { connect } from "react-redux";
 import FilmLowerDetail from "../Component/FilmLowerDetail";
 import CharacterLowerDetail from "../Component/CharacterLowerDetail";
-import { imgNotFound } from "../Component/exportItems";
-import { IMAGE_URL } from "../Component/exportItems";
-
+import Image from "../Component/Image";
+import NavigationBar from "../Component/NavigationBar";
+import MainLoader from "../Component/MainLoader";
 
 function PlanetDetails({ planetData, dispatchPlanetDetail }) {
     const params = useParams();
@@ -15,35 +15,24 @@ function PlanetDetails({ planetData, dispatchPlanetDetail }) {
         dispatchPlanetDetail(params.id);
     }, [params.id, dispatchPlanetDetail]);
 
-    if(planetData.planet.loading)
-    return "Loading...";
+    if (planetData.planet.loading)
+        return <MainLoader/>;
 
     return <div className="element-details">
-            <NavigationBar planetData={planetData}/>
-            <PlanetInfo params={params} planetData={planetData}/>
-            <div className="element-details-other">
-                <FilmLowerDetail />
-                <CharacterLowerDetail />
-            </div>
+        <NavigationBar type="planets" title={planetData.planet.data.name}/>
+        <PlanetInfo params={params} planetData={planetData} />
+        <div className="element-details-other">
+            <FilmLowerDetail />
+            <CharacterLowerDetail />
         </div>
-}
-
-const NavigationBar = ({planetData}) => {
-    return <div className="link">
-        <Link to={"/"}>Home</Link>
-        &nbsp; &nbsp;<span>/</span>
-        &nbsp; &nbsp;<Link to={"/planets"}>Planets</Link>
-        &nbsp; &nbsp;<span>/</span>
-        &nbsp; &nbsp;<span>{planetData.planet.data.name}</span>
     </div>
 }
 
-const PlanetInfo = ({params, planetData}) => {
+
+const PlanetInfo = ({ params, planetData }) => {
     return <div className="element-details-personal">
         <div className="element-details-personal-img">
-            <img src={`${IMAGE_URL}planets/${params.id}.jpg`} alt={`${planetData.planet.data.name}`}
-                onError={imgNotFound}
-            />
+            <Image type="planets" subType={params.id} />
         </div>
         <div className="element-details-personal-detail">
             <h2>{planetData.planet.data.name}</h2>

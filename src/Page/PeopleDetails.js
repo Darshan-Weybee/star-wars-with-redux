@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { fetchCharacterDetails } from "../redux/reducer/character/characterDetail/characterAction";
 import FilmLowerDetail from "../Component/FilmLowerDetail";
 import StarshipLowerDetail from "../Component/StarshipLowerDetail";
 import VehicleLowerDetail from "../Component/VehicleLowerDetail";
-import { imgNotFound } from "../Component/exportItems";
-import { IMAGE_URL } from "../Component/exportItems";
-
+import Image from "../Component/Image";
+import NavigationBar from "../Component/NavigationBar";
+import MainLoader from "../Component/MainLoader";
 
 function ElementDetails({characterData, dispatchCharacterDetail}) {
     const params = useParams();
@@ -17,10 +17,10 @@ function ElementDetails({characterData, dispatchCharacterDetail}) {
     }, [params.id, dispatchCharacterDetail]);
 
     if(characterData.char.loading)
-    return "Loading...";
+    return <MainLoader/>;
 
     return <div className="element-details">
-           <NavigationBar characterData={characterData}/>
+            <NavigationBar type="people" title={characterData.char.data.name}/>
            <PeopleDetails params={params} characterData={characterData}/>
             <div className="element-details-other">
                 <FilmLowerDetail/>
@@ -30,20 +30,11 @@ function ElementDetails({characterData, dispatchCharacterDetail}) {
         </div>
 }
 
-const NavigationBar = ({characterData}) =>{
-    return <div className="link">
-        <Link to={"/"}>Home</Link>
-        &nbsp; &nbsp;<span>/</span>
-        &nbsp; &nbsp;<Link to={"/people"}>People</Link>
-        &nbsp; &nbsp;<span>/</span>
-        &nbsp; &nbsp;<span>{characterData.char.data.name}</span>
-    </div>
-}
 
 const PeopleDetails = ({params, characterData}) => {
     return <div className="element-details-personal">
     <div className="element-details-personal-img">
-        <img src={`${IMAGE_URL}characters/${params.id}.jpg`} alt={`${characterData.char.data.name}`} onError={imgNotFound} />
+        <Image type="characters" subType={params.id}/>
     </div>
     <div className="element-details-personal-detail">
         <h2>{characterData.char.data.name}</h2>

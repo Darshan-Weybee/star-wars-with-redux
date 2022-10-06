@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { fetchFilmDetails } from "../redux/reducer/films/filmDetail/filmAction";
 import { connect } from "react-redux";
 import CharacterLowerDetail from "../Component/CharacterLowerDetail";
@@ -7,9 +7,10 @@ import PlanetLowerDetail from "../Component/PlanetLowerDetail";
 import VehicleLowerDetail from "../Component/VehicleLowerDetail";
 import StarshipLowerDetail from "../Component/StarshipLowerDetail";
 import SpeciesLowerDetail from "../Component/SpeciesLowerDetail";
-import { ROMAN } from "../Component/exportItems";
-import { imgNotFound } from "../Component/exportItems";
-import { IMAGE_URL } from "../Component/exportItems";
+import { ROMAN } from "../ShareItem/exportItems";
+import Image from "../Component/Image";
+import NavigationBar from "../Component/NavigationBar";
+import MainLoader from "../Component/MainLoader";
 
 
 function FilmsDetails({ filmData, dispatchFilmDetail }) {
@@ -20,10 +21,10 @@ function FilmsDetails({ filmData, dispatchFilmDetail }) {
     }, [params.id, dispatchFilmDetail]);
 
     if(filmData.film.loading)
-        return "Loading...";
+        return <MainLoader/>;
 
     return <div className="element-details">
-                <NavigationBar filmData={filmData}/>
+                <NavigationBar type="films" title={`Episode ${ROMAN[filmData.film.data.episode_id]} : ${filmData.film.data.title}`}/>
                 <FilmDetail params={params} filmData={filmData}/>
                 <div className="element-details-other">
                     <CharacterLowerDetail />
@@ -35,21 +36,10 @@ function FilmsDetails({ filmData, dispatchFilmDetail }) {
             </div>
     
 }
-
-const NavigationBar = ({filmData}) => {
-    return <div className="link">
-        <Link to={"/"}>Home</Link>
-        &nbsp; &nbsp;<span>/</span>
-        &nbsp; &nbsp;<Link to={"/films"}>Films</Link>
-        &nbsp; &nbsp;<span>/</span>
-        &nbsp; &nbsp;<span>{`Episode ${ROMAN[filmData.film.data.episode_id]} : ${filmData.film.data.title}`}</span>
-    </div>
-}
-
 const FilmDetail = ({params, filmData}) => {
     return <div className="element-details-personal">
         <div className="element-details-personal-img">
-            <img src={`${IMAGE_URL}films/${params.id}.jpg`} alt={`${filmData.film.data.title}`} onError={imgNotFound} />
+            <Image type="films" subType={params.id}/>
         </div>
         <div className="element-details-personal-detail">
             <h2>{`Episode ${ROMAN[filmData.film.data.episode_id]} : ${filmData.film.data.title}`}</h2>

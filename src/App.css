@@ -60,6 +60,10 @@
   padding: 0 0 2rem 1rem;
 }
 
+.link-slash{
+  margin: 0 0.7rem;
+}
+
 .link a{
   color: aqua;
   text-decoration: none;

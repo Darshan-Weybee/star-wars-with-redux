@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { IMAGE_URL } from "../Component/exportItems";
+import Image from "../Component/Image";
 
 const HOME_IMAGE_DETAILS = [
     {
@@ -41,7 +41,7 @@ function Home() {
             {HOME_IMAGE_DETAILS.map((itemDetail, index) => {
                 return <Link key={index} to={`${itemDetail.link}`} className="home-inside">
                     <div className="home-inside-title">{`${itemDetail.title}`}</div>
-                    <img src={`${IMAGE_URL}categories/${itemDetail.image}.jpg`} alt={`${itemDetail.title}`} />
+                    <Image type="categories" subType={itemDetail.image}/>
                 </Link>
             })
             }
